@@ -1,4 +1,4 @@
-package gg.alexandre.extended;
+package gg.alexandre.extended.effects;
 
 import com.hypixel.hytale.builtin.triggervolumes.effect.TriggerContext;
 import com.hypixel.hytale.builtin.triggervolumes.effect.TriggerEffect;
