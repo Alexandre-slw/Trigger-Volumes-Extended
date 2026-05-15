@@ -5,11 +5,12 @@ import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Int
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.RootInteraction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import gg.alexandre.extended.commands.RunTriggerVolumeCommand;
 import gg.alexandre.extended.effects.CommandEffect;
 import gg.alexandre.extended.effects.DestroyOtherVolumeEffect;
 import gg.alexandre.extended.effects.PressInteractionEffect;
-import gg.alexandre.extended.interact.VolumeInteractionComponent;
 import gg.alexandre.extended.interact.VolumeInteraction;
+import gg.alexandre.extended.interact.VolumeInteractionComponent;
 import gg.alexandre.extended.interact.VolumeInteractionResource;
 import gg.alexandre.extended.interact.VolumeInteractionSystem;
 
@@ -24,6 +25,16 @@ public class TriggerExtendedPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
+        setupCommands();
+        setupEffects();
+        setupInteraction();
+    }
+
+    private void setupCommands() {
+        getCommandRegistry().registerCommand(new RunTriggerVolumeCommand());
+    }
+
+    private void setupEffects() {
         TriggerVolumesPlugin.get().registerEffectType("Command", CommandEffect.class, CommandEffect.CODEC);
         TriggerVolumesPlugin.get().registerEffectType(
                 "DestroyOtherVolume", DestroyOtherVolumeEffect.class, DestroyOtherVolumeEffect.CODEC
@@ -31,7 +42,9 @@ public class TriggerExtendedPlugin extends JavaPlugin {
         TriggerVolumesPlugin.get().registerEffectType(
                 "PressInteraction", PressInteractionEffect.class, PressInteractionEffect.CODEC
         );
+    }
 
+    private void setupInteraction() {
         this.getCodecRegistry(Interaction.CODEC).register(
                 "VolumeInteraction", VolumeInteraction.class, VolumeInteraction.CODEC
         );
