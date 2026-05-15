@@ -34,30 +34,19 @@ public final class VolumeInteractionRunner {
         }
     }
 
-    public static void fire(
-            @Nonnull TriggerEventType eventType,
-            @Nonnull Ref<EntityStore> entityRef,
-            @Nonnull UUID entityUuid,
-            @Nonnull VolumeEntry volume,
-            @Nonnull TriggerVolumeManager manager,
-            @Nonnull Store<EntityStore> store,
-            long nowNanos,
-            boolean includeGroupEffects
-    ) {
+    public static void fire(@Nonnull TriggerEventType eventType, @Nonnull Ref<EntityStore> entityRef,
+                            @Nonnull UUID entityUuid, @Nonnull VolumeEntry volume,
+                            @Nonnull TriggerVolumeManager manager, @Nonnull Store<EntityStore> store,
+                            long nowNanos, boolean includeGroupEffects) {
         fireEffects(eventType, entityRef, entityUuid, volume, store, nowNanos);
         if (includeGroupEffects) {
             fireGroupEffects(eventType, entityRef, entityUuid, volume, manager, store, nowNanos);
         }
     }
 
-    private static void fireEffects(
-            @Nonnull TriggerEventType eventType,
-            @Nonnull Ref<EntityStore> entityRef,
-            @Nonnull UUID entityUuid,
-            @Nonnull VolumeEntry volume,
-            @Nonnull Store<EntityStore> store,
-            long nowNanos
-    ) {
+    private static void fireEffects(@Nonnull TriggerEventType eventType, @Nonnull Ref<EntityStore> entityRef,
+                                    @Nonnull UUID entityUuid, @Nonnull VolumeEntry volume,
+                                    @Nonnull Store<EntityStore> store, long nowNanos) {
         List<TriggerEffect> effects = volume.getEffects();
         for (int i = 0; i < effects.size(); i++) {
             TriggerEffect effect = effects.get(i);
@@ -98,15 +87,10 @@ public final class VolumeInteractionRunner {
         }
     }
 
-    private static void fireGroupEffects(
-            @Nonnull TriggerEventType eventType,
-            @Nonnull Ref<EntityStore> entityRef,
-            @Nonnull UUID entityUuid,
-            @Nonnull VolumeEntry volume,
-            @Nonnull TriggerVolumeManager manager,
-            @Nonnull Store<EntityStore> store,
-            long nowNanos
-    ) {
+    private static void fireGroupEffects(@Nonnull TriggerEventType eventType, @Nonnull Ref<EntityStore> entityRef,
+                                         @Nonnull UUID entityUuid, @Nonnull VolumeEntry volume,
+                                         @Nonnull TriggerVolumeManager manager, @Nonnull Store<EntityStore> store,
+                                         long nowNanos) {
         if (volume.getGroupId() == null) {
             return;
         }

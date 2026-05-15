@@ -38,11 +38,8 @@ public class VolumeInteraction extends SimpleInstantInteraction {
     }
 
     @Override
-    protected void firstRun(
-            @Nonnull InteractionType type,
-            @Nonnull InteractionContext context,
-            @Nonnull CooldownHandler cooldownHandler
-    ) {
+    protected void firstRun(@Nonnull InteractionType type, @Nonnull InteractionContext context,
+                            @Nonnull CooldownHandler cooldownHandler) {
         CommandBuffer<EntityStore> commandBuffer = context.getCommandBuffer();
         Ref<EntityStore> playerRef = context.getEntity();
         Ref<EntityStore> targetRef = context.getTargetEntity();

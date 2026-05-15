@@ -34,7 +34,14 @@ public class VolumeInteractionResource implements Resource<EntityStore> {
     @Nullable
     public Ref<EntityStore> get(@Nonnull String volumeId) {
         Ref<EntityStore> ref = entitiesByVolumeId.get(volumeId);
-        return ref != null && ref.isValid() ? ref : null;
+        if (ref == null) {
+            return null;
+        }
+        if (ref.isValid()) {
+            return ref;
+        }
+        entitiesByVolumeId.remove(volumeId);
+        return null;
     }
 
     public void put(@Nonnull String volumeId, @Nonnull Ref<EntityStore> ref) {

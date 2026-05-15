@@ -44,13 +44,8 @@ public class RunTriggerVolumeCommand extends AbstractPlayerCommand {
     }
 
     @Override
-    protected void execute(
-            @Nonnull CommandContext context,
-            @Nonnull Store<EntityStore> store,
-            @Nonnull Ref<EntityStore> playerRef,
-            @Nonnull PlayerRef player,
-            @Nonnull World world
-    ) {
+    protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
+                           @Nonnull Ref<EntityStore> playerRef, @Nonnull PlayerRef player, @Nonnull World world) {
         TriggerEventType eventType = parseEvent(context, eventArg.get(context));
         if (eventType == null) {
             return;
@@ -108,12 +103,8 @@ public class RunTriggerVolumeCommand extends AbstractPlayerCommand {
         return names;
     }
 
-    private static void suggestVolumeIds(
-            @Nonnull CommandSender sender,
-            @Nonnull String input,
-            int index,
-            @Nonnull SuggestionResult result
-    ) {
+    private static void suggestVolumeIds(@Nonnull CommandSender sender, @Nonnull String input, int index,
+                                         @Nonnull SuggestionResult result) {
         if (!(sender instanceof PlayerRef player) || !player.isValid()) {
             return;
         }
@@ -134,12 +125,8 @@ public class RunTriggerVolumeCommand extends AbstractPlayerCommand {
         }
     }
 
-    private static void suggestEvents(
-            @Nonnull CommandSender sender,
-            @Nonnull String input,
-            int index,
-            @Nonnull SuggestionResult result
-    ) {
+    private static void suggestEvents(@Nonnull CommandSender sender, @Nonnull String input, int index,
+                                      @Nonnull SuggestionResult result) {
         String prefix = input.toLowerCase(Locale.ROOT);
         for (TriggerEventType eventType : TriggerEventType.values()) {
             String event = eventType.name().toLowerCase(Locale.ROOT);

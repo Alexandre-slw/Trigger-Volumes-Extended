@@ -17,6 +17,7 @@ import gg.alexandre.extended.effects.CommandEffect;
 import gg.alexandre.extended.effects.DestroyOtherVolumeEffect;
 import gg.alexandre.extended.effects.PressInteractionEffect;
 import gg.alexandre.extended.interact.VolumeInteraction;
+import gg.alexandre.extended.interact.VolumeInteractionCleanupSystem;
 import gg.alexandre.extended.interact.VolumeInteractionComponent;
 import gg.alexandre.extended.interact.VolumeInteractionResource;
 import gg.alexandre.extended.interact.VolumeInteractionSystem;
@@ -97,6 +98,7 @@ public class TriggerExtendedPlugin extends JavaPlugin {
                         VolumeInteractionResource.class, VolumeInteractionResource::new
                 )
         );
+        this.getEntityStoreRegistry().registerSystem(new VolumeInteractionCleanupSystem());
         this.getEntityStoreRegistry().registerSystem(new VolumeInteractionSystem());
     }
 
