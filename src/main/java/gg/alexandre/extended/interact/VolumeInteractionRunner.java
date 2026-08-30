@@ -26,6 +26,8 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 
+import com.hypixel.hytale.builtin.triggervolumes.system.DelayedEffectScheduler.ScheduledEffectCallback;
+
 public final class VolumeInteractionRunner {
 
     @Nonnull
@@ -35,8 +37,24 @@ public final class VolumeInteractionRunner {
             Collections.synchronizedMap(new WeakHashMap<>());
 
     @Nonnull
+    private static final ScheduledEffectCallback NOOP_CALLBACK = (finished, timestampNanos) -> {
+    };
+
+    @Nonnull
     private static DelayedEffectScheduler getDelayedScheduler(@Nonnull Store<EntityStore> store) {
         return DELAYED_EFFECT_SCHEDULERS.computeIfAbsent(store, ignored -> new DelayedEffectScheduler());
+    }
+
+    private static void scheduleEffect(@Nonnull DelayedEffectScheduler scheduler, @Nonnull TriggerEffect effect,
+                                       @Nonnull Ref<EntityStore> entityRef, @Nonnull UUID entityUuid,
+                                       @Nonnull TriggerEventType eventType, @Nonnull VolumeEntry volume,
+                                       long nowNanos, float totalDelay, @Nullable List<VolumeEntry> spatialVolumes,
+                                       @Nonnull Store<EntityStore> store) {
+        scheduler.schedule(
+                effect, entityRef, entityUuid, eventType, volume, nowNanos, totalDelay,
+                spatialVolumes == null ? List.of() : spatialVolumes,
+                NOOP_CALLBACK, store, null
+        );
     }
 
     public static void tickDelayed(@Nonnull Store<EntityStore> store) {
@@ -91,16 +109,8 @@ public final class VolumeInteractionRunner {
 
             float totalDelay = volume.getActivationDelay() + effect.getDelay();
             if (totalDelay > 0.0f) {
-                DelayedEffectScheduler scheduler = getDelayedScheduler(store);
-                if (spatialVolumes == null) {
-                    scheduler.schedule(
-                            effect, entityRef, entityUuid, eventType, volume, nowNanos, totalDelay
-                    );
-                } else {
-                    scheduler.schedule(
-                            effect, entityRef, entityUuid, eventType, volume, nowNanos, totalDelay, spatialVolumes
-                    );
-                }
+                scheduleEffect(getDelayedScheduler(store), effect, entityRef, entityUuid, eventType, volume,
+                        nowNanos, totalDelay, spatialVolumes, store);
                 if (intervalKey != null) {
                     volume.getLastFireTimes().put(intervalKey, nowNanos);
                 }
@@ -181,9 +191,8 @@ public final class VolumeInteractionRunner {
 
             float totalDelay = volume.getActivationDelay() + effect.getDelay();
             if (totalDelay > 0.0f) {
-                getDelayedScheduler(store).schedule(
-                        effect, entityRef, entityUuid, eventType, volume, nowNanos, totalDelay, spatialVolumes
-                );
+                scheduleEffect(getDelayedScheduler(store), effect, entityRef, entityUuid, eventType, volume,
+                        nowNanos, totalDelay, spatialVolumes, store);
                 if (intervalKey != null) {
                     volume.getLastFireTimes().put(intervalKey, nowNanos);
                 }
