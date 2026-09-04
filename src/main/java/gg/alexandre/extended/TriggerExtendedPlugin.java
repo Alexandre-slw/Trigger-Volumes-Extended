@@ -14,7 +14,6 @@ import gg.alexandre.extended.effects.PressInteractionEffect;
 import gg.alexandre.extended.effects.ShapeColorEffect;
 import gg.alexandre.extended.interact.*;
 import gg.alexandre.extended.util.EnumReflectionUtil;
-import sun.misc.Unsafe;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -41,14 +40,8 @@ public class TriggerExtendedPlugin extends JavaPlugin {
     }
 
     private void setupTriggerEvents() {
-        try {
-            Unsafe unsafe = EnumReflectionUtil.getUnsafe();
-            EnumReflectionUtil.addTriggerEvent(unsafe, PRESS_EVENT);
-            EnumReflectionUtil.addTriggerEvent(unsafe, COMMAND_EVENT);
-            EnumReflectionUtil.patchTriggerEffectCodec(unsafe);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Failed to register extended trigger events", e);
-        }
+        EnumReflectionUtil.registerTriggerEvent(PRESS_EVENT);
+        EnumReflectionUtil.registerTriggerEvent(COMMAND_EVENT);
     }
 
     private void setupEffects() {
